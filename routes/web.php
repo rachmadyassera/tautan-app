@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +38,9 @@ Route::middleware('auth')->group(function () {
 // Route untuk Login Google
 Route::get('/auth/google', [SocialiteController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialiteController::class, 'callback']);
+
+// --- ROUTE PALING BAWAH ---
+// Ini disebut "Catch-All Route"
+Route::get('/{slug}', [PublicController::class, 'show'])->name('public.page');
 
 require __DIR__ . '/auth.php';
