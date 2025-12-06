@@ -4,6 +4,7 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,14 +34,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/links', [LinkController::class, 'store'])->name('links.store');
     Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
+
+    Route::put('/page/update', [PageController::class, 'update'])->name('page.update');
 });
 
 // Route untuk Login Google
 Route::get('/auth/google', [SocialiteController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialiteController::class, 'callback']);
 
+require __DIR__ . '/auth.php';
+
 // --- ROUTE PALING BAWAH ---
 // Ini disebut "Catch-All Route"
 Route::get('/{slug}', [PublicController::class, 'show'])->name('public.page');
-
-require __DIR__ . '/auth.php';

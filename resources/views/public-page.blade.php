@@ -18,12 +18,10 @@
         <div class="pt-12 pb-6 px-6 text-center z-10 relative">
             
             <div class="relative mx-auto w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg mb-4 transform hover:scale-105 transition duration-300">
-                @if($page->avatar_path)
+                @if(str_starts_with($page->avatar_path, 'http'))
                     <img src="{{ $page->avatar_path }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
                 @else
-                    <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-3xl font-bold">
-                        {{ substr($page->title, 0, 1) }}
-                    </div>
+                    <img src="{{ asset('storage/' . $page->avatar_path) }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
                 @endif
             </div>
 
