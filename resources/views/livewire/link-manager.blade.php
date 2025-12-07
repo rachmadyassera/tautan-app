@@ -7,7 +7,10 @@
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
         <div class="p-6 text-gray-900">
-            <h3 class="font-bold text-lg mb-4">Tambah Link Baru</h3>
+            
+            <h3 class="font-bold text-lg mb-4">
+                {{ $linkIdBeingEdited ? 'Edit Link' : 'Tambah Link Baru' }}
+            </h3>
             
             <form wire:submit.prevent="saveLink">
                 <div class="flex flex-col gap-4" wire:key="form-input-{{ $iteration }}">
@@ -39,10 +42,21 @@
                                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                             @error('url') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                            <span wire:loading.remove wire:target="saveLink">Tambah</span>
-                            <span wire:loading wire:target="saveLink">Loading...</span>
-                        </button>
+                        
+                        <div class="flex gap-2">
+                            @if($linkIdBeingEdited)
+                                <button type="button" wire:click="cancelEdit" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition">
+                                    Batal
+                                </button>
+                            @endif
+
+                            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50 transition">
+                                <span wire:loading.remove wire:target="saveLink">
+                                    {{ $linkIdBeingEdited ? 'Update' : 'Tambah' }}
+                                </span>
+                                <span wire:loading wire:target="saveLink">Processing...</span>
+                            </button>
+                        </div>
                     </div>
 
                     @if ($photo)
@@ -86,11 +100,18 @@
                             </div>
                         </div>
 
-                        <button wire:click="deleteLink({{ $link->id }})" 
-                                wire:confirm="Yakin hapus link ini?"
-                                class="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
+                       <div class="flex items-center gap-1">
+                            <button wire:click="editLink({{ $link->id }})" 
+                                    class="text-blue-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </button>
+
+                            <button wire:click="deleteLink({{ $link->id }})" 
+                                    wire:confirm="Yakin hapus link ini?"
+                                    class="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
                     </li>
                 @endforeach
             </ul>

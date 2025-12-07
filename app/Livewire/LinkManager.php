@@ -17,6 +17,9 @@ class LinkManager extends Component
     public $url = '';
     public $photo;
 
+    // TAMBAHAN: Variabel untuk mode edit
+    public $linkIdBeingEdited = null;
+
     public $iteration = 1;
 
     // Listener agar komponen refresh otomatis jika ada event tertentu
@@ -31,37 +34,88 @@ class LinkManager extends Component
     }
 
     // 1. Fitur Tambah Link
+    // 1. MODIFIKASI: Method Simpan (Bisa create baru atau update)
     public function saveLink()
     {
-        $this->validate([
+        // Validasi dasar
+        $rules = [
             'title' => 'required|max:255',
+            // Jika mode header nanti ada, URL opsional. Tapi sekarang wajib.
             'url' => 'required|url',
-            'photo' => 'nullable|image|max:1024', // Validasi: Gambar max 1MB
-        ]);
+            'photo' => 'nullable|image|max:1024',
+        ];
 
-        $thumbnailPath = null;
+        $this->validate($rules);
 
-        if ($this->photo) {
-            // Simpan ke folder public/thumbnails
-            $thumbnailPath = $this->photo->store('thumbnails', 'public');
+        // A. LOGIKA UPDATE
+        if ($this->linkIdBeingEdited) {
+            $link = Link::find($this->linkIdBeingEdited);
+
+            // Security check
+            if (!$link || $link->page->user_id !== Auth::id()) {
+                abort(403);
+            }
+
+            $data = [
+                'title' => $this->title,
+                'url' => $this->url,
+            ];
+
+            // Cek apakah upload gambar baru?
+            if ($this->photo) {
+                $data['thumbnail'] = $this->photo->store('thumbnails', 'public');
+            }
+
+            $link->update($data);
+            session()->flash('linkSuccess', 'Link berhasil diperbarui!');
+        }
+        // B. LOGIKA CREATE BARU
+        else {
+            $thumbnailPath = null;
+            if ($this->photo) {
+                $thumbnailPath = $this->photo->store('thumbnails', 'public');
+            }
+
+            Link::create([
+                'page_id' => Auth::user()->page->id,
+                'title' => $this->title,
+                'url' => $this->url,
+                'thumbnail' => $thumbnailPath,
+                'position' => Link::where('page_id', Auth::user()->page->id)->max('position') + 1,
+            ]);
+            session()->flash('linkSuccess', 'Link berhasil ditambahkan!');
         }
 
-        Link::create([
-            'page_id' => Auth::user()->page->id,
-            'title' => $this->title,
-            'url' => $this->url,
-            'thumbnail' => $thumbnailPath,
-            'position' => Link::where('page_id', Auth::user()->page->id)->max('position') + 1, // Taruh di urutan paling bawah
-        ]);
-
-        // Reset form input
-        $this->reset(['title', 'url', 'photo']);
-
-        $this->iteration++;
-
-        // Kirim notifikasi sukses (opsional, bisa pakai session flash)
-        session()->flash('linkSuccess', 'Link berhasil ditambahkan!');
+        $this->cancelEdit(); // Reset form
     }
+
+    // 2. TAMBAHAN: Fungsi Edit (Dipanggil saat tombol pensil diklik)
+    public function editLink($id)
+    {
+        $link = Link::findOrFail($id);
+
+        // Security check
+        if ($link->page->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $this->linkIdBeingEdited = $id;
+        $this->title = $link->title;
+        $this->url = $link->url;
+
+        // TAMBAHAN PENTING:
+        // Ini memaksa form (yang pakai wire:key) untuk dirender ulang
+        // sehingga nilai title & url yang baru akan masuk ke input.
+        $this->iteration++;
+    }
+
+    // 3. TAMBAHAN: Fungsi Batal Edit
+    public function cancelEdit()
+    {
+        $this->reset(['title', 'url', 'photo', 'linkIdBeingEdited']);
+        $this->iteration++;
+    }
+
 
     // 2. Fitur Hapus Link
     public function deleteLink($id)
