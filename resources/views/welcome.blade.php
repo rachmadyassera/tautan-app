@@ -128,7 +128,7 @@
             <div class="flex space-x-6">
                 <a href="#" class="text-gray-400 hover:text-white">Privacy</a>
                 <a href="#" class="text-gray-400 hover:text-white">Terms</a>
-                <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+                <a href="{{ url('/official-zuhri') }}" class="text-gray-400 hover:text-white">Contact</a>
             </div>
         </div>
     </footer>
