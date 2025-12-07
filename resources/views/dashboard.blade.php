@@ -57,11 +57,7 @@
                                         </a>
                                     </div>
                                     <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-gray-200 mb-2">
-                                        @if(str_starts_with($page->avatar_path, 'http'))
-                                            <img src="{{ $page->avatar_path }}" class="w-full h-full object-cover">
-                                        @else
-                                            <img src="{{ asset('storage/' . $page->avatar_path) }}" class="w-full h-full object-cover">
-                                        @endif
+                                        <img src="{{ $page->avatar_url }}" class="w-full h-full object-cover">
                                     </div>
                                     <label class="block text-sm font-medium text-gray-700 cursor-pointer text-indigo-600 hover:text-indigo-800">
                                         <span>Ganti Foto</span>
@@ -76,14 +72,35 @@
 
                                 <div class="mb-4">
                                     <label class="block font-medium text-sm text-gray-700 mb-1">Username (URL)</label>
-                                    <div class="flex rounded-md shadow-sm">
+                                    <div class="flex rounded-md shadow-sm relative">
                                         <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                             {{ request()->getHost() }}/
                                         </span>
-                                        <input type="text" name="slug" value="{{ old('slug', $page->slug) }}" 
-                                            class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        
+                                        <input type="text" name="slug" id="slugInput" value="{{ old('slug', $page->slug) }}" 
+                                            class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                             placeholder="username-anda">
+                                            
+                                        <button type="button" onclick="copyLink()" class="inline-flex items-center px-4 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-sm font-bold" title="Salin URL lengkap">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                        </button>
                                     </div>
+
+                                    <script>
+                                        function copyLink() {
+                                            // Gabungkan domain + slug yang ada di input
+                                            var domain = "{{ url('/') }}/";
+                                            var slug = document.getElementById('slugInput').value;
+                                            var fullUrl = domain + slug;
+
+                                            // Salin ke clipboard
+                                            navigator.clipboard.writeText(fullUrl).then(function() {
+                                                alert('Link berhasil disalin: ' + fullUrl);
+                                            }, function(err) {
+                                                console.error('Gagal menyalin: ', err);
+                                            });
+                                        }
+                                    </script>
                                     @error('slug')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror

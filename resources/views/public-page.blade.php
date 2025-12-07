@@ -93,6 +93,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $page->title }}</title>
+    <meta name="description" content="{{ $page->bio_text ?? 'Kunjungi link bio saya.' }}">
+    <meta name="author" content="{{ $page->title }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ route('public.page', $page->slug) }}">
+    <meta property="og:title" content="{{ $page->title }}">
+    <meta property="og:description" content="{{ $page->bio_text ?? 'Lihat profil dan link lengkap saya di sini.' }}">
+    <meta property="og:image" content="{{ str_starts_with($page->avatar_path, 'http') ? $page->avatar_path : asset('storage/' . $page->avatar_path) }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $page->title }}">
+    <meta name="twitter:description" content="{{ $page->bio_text ?? 'Lihat profil dan link lengkap saya di sini.' }}">
+    <meta name="twitter:image" content="{{ str_starts_with($page->avatar_path, 'http') ? $page->avatar_path : asset('storage/' . $page->avatar_path) }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600,700&display=swap" rel="stylesheet" />
@@ -113,11 +126,7 @@
             <div class="px-6 text-center -mt-20 relative z-10 pb-6">
                 
                 <div class="relative mx-auto w-32 h-32 rounded-full overflow-hidden border-[6px] border-white shadow-xl mb-3 bg-white">
-                    @if(str_starts_with($page->avatar_path, 'http'))
-                        <img src="{{ $page->avatar_path }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
-                    @else
-                        <img src="{{ asset('storage/' . $page->avatar_path) }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
-                    @endif
+                    <img src="{{ $page->avatar_url }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
                 </div>
 
                 <h1 class="text-2xl font-bold mb-1 {{ $currentTheme['text_primary'] }}">
