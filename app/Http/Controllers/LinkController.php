@@ -48,15 +48,16 @@ class LinkController extends Controller
     }
 
     // FITUR BARU: Catat Klik & Redirect
-    public function visit($id)
+    public function visit($short_code)
     {
-        // 1. Cari Link berdasarkan ID
-        $link = Link::findOrFail($id);
+        // 1. Cari Link berdasarkan short_code
+        // Gunakan 'where' bukan 'find'
+        $link = Link::where('short_code', $short_code)->firstOrFail();
 
         // 2. Tambah jumlah klik (+1)
         $link->increment('click_count');
 
-        // 3. Lempar pengunjung ke URL asli (Target)
+        // 3. Lempar pengunjung
         return redirect()->away($link->url);
     }
 }
