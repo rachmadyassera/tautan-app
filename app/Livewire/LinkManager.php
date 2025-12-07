@@ -42,7 +42,7 @@ class LinkManager extends Component
         $this->reset(['title', 'url']);
 
         // Kirim notifikasi sukses (opsional, bisa pakai session flash)
-        session()->flash('success', 'Link berhasil ditambahkan!');
+        session()->flash('linkSuccess', 'Link berhasil ditambahkan!');
     }
 
     // 2. Fitur Hapus Link
@@ -56,6 +56,7 @@ class LinkManager extends Component
         }
 
         $link->delete();
+        session()->flash('linkSuccess', 'Link dihapus.');
     }
 
     // 3. Fitur Reorder (Drag & Drop Logic)

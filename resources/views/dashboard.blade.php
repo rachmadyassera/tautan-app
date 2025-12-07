@@ -13,11 +13,21 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            {{-- @if (session('success'))
+            @if (session('success'))
                 <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
                     {{ session('success') }}
                 </div>
-            @endif --}}
+            @endif
+            @if ($errors->any())
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                    <strong class="font-bold">Ups! Ada masalah:</strong>
+                    <ul class="mt-2 list-disc list-inside text-sm">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
@@ -31,6 +41,21 @@
                                 @method('PUT')
 
                                 <div class="mb-4 text-center">
+                                    <div class="mb-6 text-center border-b pb-6">
+                                        <p class="text-sm font-bold text-gray-700 mb-3">QR Code Anda</p>
+                                        
+                                        <div class="flex justify-center mb-3">
+                                            <div class="p-3 bg-white border rounded-lg shadow-sm inline-block">
+                                                {!! QrCode::size(120)->color(79, 70, 229)->generate(route('public.page', $page->slug)) !!}
+                                            </div>
+                                        </div>
+
+                                        <a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={{ route('public.page', $page->slug) }}" 
+                                        target="_blank" download
+                                        class="text-xs text-indigo-600 hover:text-indigo-800 font-bold underline">
+                                            Download QR
+                                        </a>
+                                    </div>
                                     <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-gray-200 mb-2">
                                         @if(str_starts_with($page->avatar_path, 'http'))
                                             <img src="{{ $page->avatar_path }}" class="w-full h-full object-cover">
@@ -42,6 +67,11 @@
                                         <span>Ganti Foto</span>
                                         <input type="file" name="avatar" class="hidden" onchange="this.form.submit()">
                                     </label>
+                                    @error('avatar')
+                                        <p class="text-red-500 text-sm mt-2 font-bold bg-red-50 p-2 rounded">
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-4">

@@ -1,7 +1,7 @@
 <div>
-    @if (session()->has('success'))
+    @if (session()->has('linkSuccess'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 relative">
-            {{ session('success') }}
+            {{ session('linkSuccess') }}
         </div>
     @endif
 
