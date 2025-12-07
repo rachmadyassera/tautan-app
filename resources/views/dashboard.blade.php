@@ -81,56 +81,7 @@
                 </div>
 
                 <div class="lg:col-span-2 space-y-6">
-                    
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg ">
-                        <div class="p-6 text-gray-900">
-                            <h3 class="font-bold text-lg mb-4">Tambah Link Baru</h3>
-                            <form action="{{ route('links.store') }}" method="POST">
-                                @csrf
-                                <div class="flex flex-col sm:flex-row gap-3">
-                                    <input type="text" name="title" placeholder="Judul (misal: WhatsApp)" class="flex-1 border-gray-300 rounded-md shadow-sm" required>
-                                    <input type="url" name="url" placeholder="URL (https://...)" class="flex-1 border-gray-300 rounded-md shadow-sm" required>
-                                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
-                                        Tambah
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
-                        <div class="p-6 text-gray-900">
-                            <h3 class="font-bold text-lg mb-4">Link Aktif</h3>
-                            @if($links->count() > 0)
-                                <div class="space-y-3">
-                                    @foreach($links as $link)
-                                        <div class="flex items-center justify-between p-3 border rounded-lg bg-gray-50 hover:bg-white transition">
-                                            <div class="flex items-center gap-3">
-                                                <div class="cursor-move text-gray-400">
-                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                                                </div>
-                                                <div>
-                                                    <h4 class="font-bold text-gray-800">{{ $link->title }}</h4>
-                                                    <a href="{{ $link->url }}" target="_blank" class="text-xs text-indigo-500 hover:underline">{{ $link->url }}</a>
-                                                </div>
-                                            </div>
-                                            
-                                            <form action="{{ route('links.destroy', $link->id) }}" method="POST" onsubmit="return confirm('Hapus link ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 p-2 hover:bg-red-50 rounded-full">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @else
-                                <p class="text-gray-400 text-center text-sm py-4">Belum ada link.</p>
-                            @endif
-                        </div>
-                    </div>
-
+                    <livewire:link-manager />
                 </div>
             </div>
 
