@@ -72,6 +72,47 @@
                                               class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('bio_text', $page->bio_text) }}</textarea>
                                 </div>
 
+                                <div class="mb-6">
+                                    <label class="block font-medium text-sm text-gray-700 mb-2">Pilih Tema Tampilan</label>
+                                    
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="default" class="peer sr-only" {{ $page->theme == 'default' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Colorful</span>
+                                        </label>
+
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="dark" class="peer sr-only" {{ $page->theme == 'dark' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-gray-900"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Dark Mode</span>
+                                        </label>
+
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="ocean" class="peer sr-only" {{ $page->theme == 'ocean' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-gradient-to-b from-blue-400 to-cyan-300"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Ocean</span>
+                                        </label>
+                                        
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="sunset" class="peer sr-only" {{ $page->theme == 'sunset' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-gradient-to-tr from-orange-400 to-red-500"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Sunset</span>
+                                        </label>
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="forest" class="peer sr-only" {{ $page->theme == 'forest' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-gradient-to-br from-emerald-500 to-teal-600"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Forest</span>
+                                        </label>
+
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="theme" value="luxury" class="peer sr-only" {{ $page->theme == 'luxury' ? 'checked' : '' }}>
+                                            <div class="h-16 rounded-lg border-2 border-gray-200 peer-checked:border-indigo-600 peer-checked:ring-2 peer-checked:ring-indigo-200 bg-black border-b-4 border-b-yellow-500"></div>
+                                            <span class="text-xs text-center block mt-1 text-gray-600">Luxury</span>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <button type="submit" class="w-full bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition">
                                     Simpan Profil
                                 </button>

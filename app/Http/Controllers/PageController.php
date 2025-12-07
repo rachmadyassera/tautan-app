@@ -21,12 +21,14 @@ class PageController extends Controller
             'title' => 'required|string|max:255',
             'bio_text' => 'nullable|string|max:500',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'theme' => 'required|string', // <--- TAMBAHKAN VALIDASI INI
         ]);
 
         // 2. Update Data
         $page->slug = $request->slug; // Simpan slug baru
         $page->title = $request->title;
         $page->bio_text = $request->bio_text;
+        $page->theme = $request->theme; // <--- SIMPAN TEMA
 
         // 3. Cek Upload Foto (Logika sama seperti sebelumnya)
         if ($request->hasFile('avatar')) {
