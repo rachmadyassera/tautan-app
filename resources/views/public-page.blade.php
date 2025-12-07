@@ -145,25 +145,22 @@
             @foreach($links as $link)
                 <a href="{{ route('link.visit', $link->short_code) }}" 
                 target="_blank"  
-                class="relative block w-full py-4 px-6 text-center font-bold border-2 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm
+                class="relative block w-full py-4 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm mb-3 border-2 group
                         {{ $currentTheme['btn_bg'] }} 
                         {{ $currentTheme['btn_text'] }} 
                         {{ $currentTheme['btn_border'] }}">
                 
-                <div class="flex items-center justify-center relative w-full">
-                        
-                        @if($link->thumbnail)
-                            <div class="absolute left-0 top-1/2 transform -translate-y-1/2">
-                                <img src="{{ asset('storage/' . $link->thumbnail) }}" 
-                                    alt="Icon" 
-                                    class="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-sm">
-                            </div>
-                        @endif
+                    {{-- 1. GAMBAR (Posisi Absolute di Kiri) --}}
+                    @if($link->thumbnail)
+                        <img src="{{ asset('storage/' . $link->thumbnail) }}" 
+                            alt="Icon" 
+                            class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm">
+                    @endif
 
-                        <span class="z-10">{{ $link->title }}</span>
-                        
-                        <svg class="w-4 h-4 absolute right-0 opacity-0 group-hover:opacity-100 ..." ...></svg>
-                </div>
+                    {{-- 2. TEXT (Diberi Padding Kiri Kanan agar tidak nabrak) --}}
+                    <div class="w-full text-center px-14">
+                        <span class="font-bold block truncate">{{ $link->title }}</span>
+                    </div>
                 </a>
             @endforeach
 
