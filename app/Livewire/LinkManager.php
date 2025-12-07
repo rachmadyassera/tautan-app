@@ -4,13 +4,20 @@ namespace App\Livewire;
 
 use App\Models\Link;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 
 class LinkManager extends Component
 {
+
+    use WithFileUploads;
+
     // Variabel untuk Form Input
     public $title = '';
     public $url = '';
+    public $photo;
+
+    public $iteration = 1;
 
     // Listener agar komponen refresh otomatis jika ada event tertentu
     protected $listeners = ['refreshComponent' => '$refresh'];
@@ -29,17 +36,28 @@ class LinkManager extends Component
         $this->validate([
             'title' => 'required|max:255',
             'url' => 'required|url',
+            'photo' => 'nullable|image|max:1024', // Validasi: Gambar max 1MB
         ]);
+
+        $thumbnailPath = null;
+
+        if ($this->photo) {
+            // Simpan ke folder public/thumbnails
+            $thumbnailPath = $this->photo->store('thumbnails', 'public');
+        }
 
         Link::create([
             'page_id' => Auth::user()->page->id,
             'title' => $this->title,
             'url' => $this->url,
+            'thumbnail' => $thumbnailPath,
             'position' => Link::where('page_id', Auth::user()->page->id)->max('position') + 1, // Taruh di urutan paling bawah
         ]);
 
         // Reset form input
-        $this->reset(['title', 'url']);
+        $this->reset(['title', 'url', 'photo']);
+
+        $this->iteration++;
 
         // Kirim notifikasi sukses (opsional, bisa pakai session flash)
         session()->flash('linkSuccess', 'Link berhasil ditambahkan!');

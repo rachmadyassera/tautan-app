@@ -144,19 +144,26 @@
         <div class="flex-1 px-6 pt-6 pb-12 space-y-4 overflow-y-auto custom-scrollbar">
             @foreach($links as $link)
                 <a href="{{ route('link.visit', $link->short_code) }}" 
-                   target="_blank"  
-                   class="block w-full py-4 px-6 text-center font-bold border-2 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm
+                target="_blank"  
+                class="relative block w-full py-4 px-6 text-center font-bold border-2 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm
                         {{ $currentTheme['btn_bg'] }} 
                         {{ $currentTheme['btn_text'] }} 
                         {{ $currentTheme['btn_border'] }}">
-                   
-                   <span class="flex items-center justify-center relative">
-                        {{ $link->title }}
+                
+                <div class="flex items-center justify-center relative w-full">
                         
-                        <svg class="w-4 h-4 absolute right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                   </span>
+                        @if($link->thumbnail)
+                            <div class="absolute left-0 top-1/2 transform -translate-y-1/2">
+                                <img src="{{ asset('storage/' . $link->thumbnail) }}" 
+                                    alt="Icon" 
+                                    class="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-sm">
+                            </div>
+                        @endif
+
+                        <span class="z-10">{{ $link->title }}</span>
+                        
+                        <svg class="w-4 h-4 absolute right-0 opacity-0 group-hover:opacity-100 ..." ...></svg>
+                </div>
                 </a>
             @endforeach
 

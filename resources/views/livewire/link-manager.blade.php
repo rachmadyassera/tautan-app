@@ -10,21 +10,47 @@
             <h3 class="font-bold text-lg mb-4">Tambah Link Baru</h3>
             
             <form wire:submit.prevent="saveLink">
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <div class="flex-1">
-                        <input type="text" wire:model="title" placeholder="Judul (misal: WhatsApp)" 
-                               class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                        @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <div class="flex flex-col gap-4" wire:key="form-input-{{ $iteration }}">
+                    
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        
+                        <div class="w-full sm:w-auto">
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Ikon/Gbr (Opsional)</label>
+                            <input type="file" wire:model="photo" id="upload-{{ $iteration }}" class="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-indigo-50 file:text-indigo-700
+                                hover:file:bg-indigo-100">
+                            @error('photo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Judul</label>
+                            <input type="text" wire:model="title" placeholder="Judul Link" 
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
                     </div>
-                    <div class="flex-1">
-                        <input type="url" wire:model="url" placeholder="URL (https://...)" 
-                               class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                        @error('url') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex-1">
+                            <input type="url" wire:model="url" placeholder="URL (https://...)" 
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            @error('url') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50">
+                            <span wire:loading.remove wire:target="saveLink">Tambah</span>
+                            <span wire:loading wire:target="saveLink">Loading...</span>
+                        </button>
                     </div>
-                    <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                        <span wire:loading.remove wire:target="saveLink">Tambah</span>
-                        <span wire:loading wire:target="saveLink">Menyimpan...</span>
-                    </button>
+
+                    @if ($photo)
+                        <div class="text-xs text-green-600">
+                            Preview: <img src="{{ $photo->temporaryUrl() }}" class="w-10 h-10 object-cover rounded mt-1">
+                        </div>
+                    @endif
+
                 </div>
             </form>
         </div>
@@ -42,6 +68,10 @@
                             <div class="text-gray-400 cursor-move handle">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
                             </div>
+                            
+                            @if($link->thumbnail)
+                                <img src="{{ asset('storage/' . $link->thumbnail) }}" class="w-10 h-10 rounded object-cover border border-gray-200">
+                            @endif
                             
                             <div>
                                 <h4 class="font-bold text-gray-800 flex items-center gap-2">
