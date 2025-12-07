@@ -123,7 +123,7 @@
     
             <div class="h-40 w-full {{ $currentTheme['banner'] }}"></div>
 
-            <div class="px-6 text-center -mt-20 relative z-10 pb-6">
+            <div class="px-6 text-center -mt-20 relative z-10 pb-1">
                 
                 <div class="relative mx-auto w-32 h-32 rounded-full overflow-hidden border-[6px] border-white shadow-xl mb-3 bg-white">
                     <img src="{{ $page->avatar_url }}" alt="{{ $page->title }}" class="object-cover w-full h-full">
@@ -141,27 +141,44 @@
             </div>
         </div>
 
-        <div class="flex-1 px-6 pt-6 pb-12 space-y-4 overflow-y-auto custom-scrollbar">
+        <div class="flex-1 px-6 pt-3 pb-12 space-y-4 overflow-y-auto custom-scrollbar">
             @foreach($links as $link)
-                <a href="{{ route('link.visit', $link->short_code) }}" 
-                target="_blank"  
-                class="relative block w-full py-4 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm mb-3 border-2 group
-                        {{ $currentTheme['btn_bg'] }} 
-                        {{ $currentTheme['btn_text'] }} 
-                        {{ $currentTheme['btn_border'] }}">
+    
+                {{-- LOGIKA: Cek apakah ini HEADER atau LINK BIASA? --}}
                 
-                    {{-- 1. GAMBAR (Posisi Absolute di Kiri) --}}
-                    @if($link->thumbnail)
-                        <img src="{{ asset('storage/' . $link->thumbnail) }}" 
-                            alt="Icon" 
-                            class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm">
-                    @endif
-
-                    {{-- 2. TEXT (Diberi Padding Kiri Kanan agar tidak nabrak) --}}
-                    <div class="w-full text-center px-14">
-                        <span class="font-bold block truncate">{{ $link->title }}</span>
+                @if($link->is_header)
+                    {{-- TAMPILAN HEADER (Judul Bagian) --}}
+                    <div class="w-full text-center py-4 mt-2 mb-1 relative">
+                        <h3 class="font-bold text-lg tracking-wide uppercase opacity-90 {{ $currentTheme['text_primary'] }}">
+                            {{ $link->title }}
+                        </h3>
+                        {{-- Garis tipis opsional di bawah header --}}
+                        <div class="w-16 h-0.5 mx-auto bg-current opacity-20 rounded mt-1 {{ $currentTheme['text_primary'] }}"></div>
                     </div>
-                </a>
+
+                @else
+                    {{-- TAMPILAN LINK BIASA (Tombol) --}}
+                    <a href="{{ route('link.visit', $link->short_code) }}" 
+                    target="_blank"  
+                    class="relative block w-full py-4 rounded-xl transition-all transform hover:-translate-y-1 shadow-sm mb-3 border-2 group
+                            {{ $currentTheme['btn_bg'] }} 
+                            {{ $currentTheme['btn_text'] }} 
+                            {{ $currentTheme['btn_border'] }}">
+                    
+                        {{-- 1. GAMBAR (Posisi Absolute di Kiri) --}}
+                        @if($link->thumbnail)
+                            <img src="{{ asset('storage/' . $link->thumbnail) }}" 
+                                alt="Icon" 
+                                class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm">
+                        @endif
+
+                        {{-- 2. TEXT (Padding Kiri Kanan agar aman) --}}
+                        <div class="w-full text-center px-14">
+                            <span class="font-bold block truncate">{{ $link->title }}</span>
+                        </div>
+                    </a>
+                @endif
+
             @endforeach
 
             @if($links->count() == 0)

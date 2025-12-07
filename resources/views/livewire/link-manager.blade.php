@@ -15,8 +15,16 @@
             <form wire:submit.prevent="saveLink">
                 <div class="flex flex-col gap-4" wire:key="form-input-{{ $iteration }}">
                     
+                    <div class="flex items-center gap-2 p-3 bg-gray-50 rounded border border-gray-200">
+                        <input type="checkbox" wire:model.live="is_header" id="is_header" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                        <label for="is_header" class="text-sm font-medium text-gray-700 cursor-pointer select-none">
+                            Jadikan sebagai <strong>Judul Bagian (Header)</strong>
+                        </label>
+                    </div>
+
                     <div class="flex flex-col sm:flex-row gap-3">
                         
+                        @if(!$is_header)
                         <div class="w-full sm:w-auto">
                             <label class="block text-xs font-bold text-gray-700 mb-1">Ikon/Gbr (Opsional)</label>
                             <input type="file" wire:model="photo" id="upload-{{ $iteration }}" class="block w-full text-sm text-gray-500
@@ -27,21 +35,27 @@
                                 hover:file:bg-indigo-100">
                             @error('photo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
+                        @endif
 
                         <div class="flex-1">
-                            <label class="block text-xs font-bold text-gray-700 mb-1">Judul</label>
-                            <input type="text" wire:model="title" placeholder="Judul Link" 
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Judul {{ $is_header ? 'Bagian' : 'Link' }}</label>
+                            <input type="text" wire:model="title" placeholder="{{ $is_header ? 'Contoh: Media Sosial' : 'Judul Link' }}" 
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 {{ $is_header ? 'text-center font-bold bg-gray-50' : '' }}" required>
                             @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3">
+                        
+                        @if(!$is_header)
                         <div class="flex-1">
                             <input type="url" wire:model="url" placeholder="URL (https://...)" 
                                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                             @error('url') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
+                        @else
+                        <div class="flex-1"></div>
+                        @endif
                         
                         <div class="flex gap-2">
                             @if($linkIdBeingEdited)
@@ -59,7 +73,7 @@
                         </div>
                     </div>
 
-                    @if ($photo)
+                    @if ($photo && !$is_header)
                         <div class="text-xs text-green-600">
                             Preview: <img src="{{ $photo->temporaryUrl() }}" class="w-10 h-10 object-cover rounded mt-1">
                         </div>
@@ -76,31 +90,36 @@
 
             <ul id="link-list" class="space-y-3">
                 @foreach($links as $link)
-                    <li wire:key="link-{{ $link->id }}" data-id="{{ $link->id }}" class="bg-gray-50 border rounded-lg p-3 flex items-center justify-between hover:bg-white transition cursor-move group">
+                    <li wire:key="link-{{ $link->id }}" data-id="{{ $link->id }}" class="bg-gray-50 border rounded-lg p-3 flex items-center justify-between hover:bg-white transition cursor-move group {{ $link->is_header ? 'bg-indigo-50 border-indigo-200' : '' }}">
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 w-full">
                             <div class="text-gray-400 cursor-move handle">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
                             </div>
                             
-                            @if($link->thumbnail)
-                                <img src="{{ asset('storage/' . $link->thumbnail) }}" class="w-10 h-10 rounded object-cover border border-gray-200">
+                            @if(!$link->is_header)
+                                @if($link->thumbnail)
+                                    <img src="{{ asset('storage/' . $link->thumbnail) }}" class="w-10 h-10 rounded object-cover border border-gray-200">
+                                @endif
+                                
+                                <div class="overflow-hidden">
+                                    <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                        {{ $link->title }}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" title="Jumlah Klik">
+                                            {{ $link->click_count }} klik
+                                        </span>
+                                    </h4>
+                                    <a href="{{ $link->url }}" target="_blank" class="text-xs text-indigo-500 hover:underline truncate block max-w-[200px]">{{ $link->url }}</a>
+                                </div>
+
+                            @else
+                                <div class="flex-1 text-center font-bold text-indigo-700 uppercase tracking-wide text-sm">
+                                    --- {{ $link->title }} ---
+                                </div>
                             @endif
-                            
-                            <div>
-                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
-                                    {{ $link->title }}
-                                    
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" title="Jumlah Klik">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        {{ $link->click_count }} klik
-                                    </span>
-                                </h4>
-                                <a href="{{ $link->url }}" target="_blank" class="text-xs text-indigo-500 hover:underline truncate block max-w-[200px]">{{ $link->url }}</a>
-                            </div>
                         </div>
 
-                       <div class="flex items-center gap-1">
+                        <div class="flex items-center gap-1 ml-2">
                             <button wire:click="editLink({{ $link->id }})" 
                                     class="text-blue-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50 transition">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -126,26 +145,16 @@
     <script>
         document.addEventListener('livewire:initialized', () => {
             let el = document.getElementById('link-list');
-            
-            // Inisialisasi Sortable
             Sortable.create(el, {
                 animation: 150,
-                handle: '.handle', // Hanya bisa digeser jika pegang icon garis
-                ghostClass: 'bg-indigo-50', // Efek visual saat digeser
-                
-                // Saat selesai drop/geser
+                handle: '.handle', 
+                ghostClass: 'bg-indigo-50', 
                 onEnd: function (evt) {
-                    // Ambil urutan baru
                     let sortable = this;
-                    let items = sortable.toArray(); // Array ID Link (berdasarkan data-id)
-                    
-                    // Format data agar sesuai selera controller Livewire
-                    // Kita butuh: [{value: 1, order: 1}, {value: 5, order: 2}, ...]
+                    let items = sortable.toArray(); 
                     let newOrder = items.map((value, index) => {
                         return { value: value, order: index + 1 };
                     });
-
-                    // Panggil fungsi PHP 'updateLinkOrder' di LinkManager.php
                     @this.call('updateLinkOrder', newOrder);
                 }
             });

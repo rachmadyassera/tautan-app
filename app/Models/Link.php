@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    protected $fillable = ['page_id', 'title', 'url', 'thumbnail', 'is_active', 'position', 'short_code'];
+    protected $fillable = ['page_id', 'title', 'url', 'thumbnail', 'is_active', 'position', 'short_code', 'is_header',];
 
     public function page()
     {
