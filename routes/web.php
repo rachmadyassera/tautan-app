@@ -45,5 +45,9 @@ Route::get('/auth/google/callback', [SocialiteController::class, 'callback']);
 require __DIR__ . '/auth.php';
 
 // --- ROUTE PALING BAWAH ---
+
+// Route untuk mencatat klik (Bisa diakses siapa saja)
+Route::get('/go/{id}', [LinkController::class, 'visit'])->name('link.visit');
+
 // Ini disebut "Catch-All Route"
 Route::get('/{slug}', [PublicController::class, 'show'])->name('public.page');

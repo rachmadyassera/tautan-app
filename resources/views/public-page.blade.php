@@ -38,7 +38,7 @@
 
         <div class="flex-1 px-6 pt-6 pb-12 space-y-4 overflow-y-auto custom-scrollbar">
             @foreach($links as $link)
-                <a href="{{ $link->url }}" 
+                <a href="{{ route('link.visit', $link->id) }}" 
                    target="_blank" 
                    rel="noopener noreferrer"
                    class="group block w-full py-4 px-6 text-center font-semibold rounded-full transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg

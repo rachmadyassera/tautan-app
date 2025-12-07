@@ -44,7 +44,14 @@
                             </div>
                             
                             <div>
-                                <h4 class="font-bold text-gray-800">{{ $link->title }}</h4>
+                                <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                                    {{ $link->title }}
+                                    
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" title="Jumlah Klik">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                        {{ $link->click_count }} klik
+                                    </span>
+                                </h4>
                                 <a href="{{ $link->url }}" target="_blank" class="text-xs text-indigo-500 hover:underline truncate block max-w-[200px]">{{ $link->url }}</a>
                             </div>
                         </div>

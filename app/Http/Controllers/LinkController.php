@@ -46,4 +46,17 @@ class LinkController extends Controller
 
         return redirect()->back()->with('success', 'Link dihapus.');
     }
+
+    // FITUR BARU: Catat Klik & Redirect
+    public function visit($id)
+    {
+        // 1. Cari Link berdasarkan ID
+        $link = Link::findOrFail($id);
+
+        // 2. Tambah jumlah klik (+1)
+        $link->increment('click_count');
+
+        // 3. Lempar pengunjung ke URL asli (Target)
+        return redirect()->away($link->url);
+    }
 }
