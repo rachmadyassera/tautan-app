@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\VisitController;
+use Illuminate\Support\Str;
+use App\Models\Link;
 
 use App\Http\Controllers\Auth\SocialiteController;
 
@@ -48,7 +50,7 @@ require __DIR__ . '/auth.php';
 
 // Route untuk mencatat klik (Bisa diakses siapa saja)
 // Ganti '{id}' menjadi '{short_code}'
-Route::get('/go/{short_code}', [LinkController::class, 'visit'])->name('link.visit');
-
+// Route::get('/go/{short_code}', [LinkController::class, 'visit'])->name('link.visit');
+Route::get('/visit/{code}', [VisitController::class, 'visit'])->name('link.visit');
 // Ini disebut "Catch-All Route"
 Route::get('/{slug}', [PublicController::class, 'show'])->name('public.page');
