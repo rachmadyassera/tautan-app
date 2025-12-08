@@ -59,28 +59,10 @@
         @endif
 
         <form wire:submit.prevent="saveSettings">
-            
+    
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-1">Username (URL)</label>
-                        
-                        <div class="flex w-full rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 overflow-hidden">
-                            
-                            <span class="flex select-none items-center pl-3 pr-2 text-gray-500 sm:text-sm bg-gray-100 border-r border-gray-300">
-                                {{ request()->getHost() }}/
-                            </span>
-                            
-                            <input type="text" 
-                                wire:model="slug" 
-                                class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" 
-                                placeholder="username">
-                        </div>
-                        
-                        <p class="text-xs text-gray-500 mt-1">Hanya huruf, angka, dan tanda strip (-).</p>
-                        @error('slug') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
                     
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Foto Profil</label>
@@ -101,6 +83,18 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Username (URL)</label>
+                        <div class="flex w-full rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 overflow-hidden">
+                            <span class="flex select-none items-center pl-3 pr-2 text-gray-500 sm:text-sm bg-gray-100 border-r border-gray-300">
+                                {{ request()->getHost() }}/
+                            </span>
+                            <input type="text" wire:model="slug" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="username">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Hanya huruf, angka, dan tanda strip (-).</p>
+                        @error('slug') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">Nama / Judul Halaman</label>
                         <input type="text" wire:model="title" class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
@@ -116,43 +110,73 @@
                 </div>
 
                 <div>
+                    @php
+                        $themes = [
+                            'default' => ['label' => 'Default (Colorful)', 'color' => 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500'],
+                            'dark'    => ['label' => 'Dark Mode', 'color' => 'bg-gray-800'],
+                            'ocean'   => ['label' => 'Ocean Blue', 'color' => 'bg-gradient-to-b from-sky-400 to-blue-600'],
+                            'sunset'  => ['label' => 'Sunset Orange', 'color' => 'bg-gradient-to-tr from-orange-500 to-red-600'],
+                            'forest'  => ['label' => 'Forest Green', 'color' => 'bg-gradient-to-br from-emerald-600 to-teal-900'],
+                            'luxury'  => ['label' => 'Luxury Gold', 'color' => 'bg-neutral-900 border border-yellow-600'],
+                        ];
+                    @endphp
                     <label class="block text-sm font-bold text-gray-700 mb-3">Pilih Tema Warna</label>
                     
-                    <div class="grid grid-cols-2 gap-3">
-                        @php
-                            $themes = [
-                                'default' => ['label' => 'Default (Colorful)', 'color' => 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500'],
-                                'dark'    => ['label' => 'Dark Mode', 'color' => 'bg-gray-800'],
-                                'ocean'   => ['label' => 'Ocean Blue', 'color' => 'bg-gradient-to-b from-sky-400 to-blue-600'],
-                                'sunset'  => ['label' => 'Sunset Orange', 'color' => 'bg-gradient-to-tr from-orange-500 to-red-600'],
-                                'forest'  => ['label' => 'Forest Green', 'color' => 'bg-gradient-to-br from-emerald-600 to-teal-900'],
-                                'luxury'  => ['label' => 'Luxury Gold', 'color' => 'bg-neutral-900 border border-yellow-600'],
-                            ];
-                        @endphp
-
+                    <div class="grid grid-cols-2 gap-3 mb-8">
                         @foreach($themes as $key => $val)
                             <label class="cursor-pointer relative" wire:key="theme-{{ $key }}">
-                                
-                                <input type="radio" 
-                                    wire:model="theme" 
-                                    name="theme" 
-                                    value="{{ $key }}" 
-                                    class="peer sr-only">
-                                
+                                <input type="radio" wire:model="theme" name="theme" value="{{ $key }}" class="peer sr-only">
                                 <div class="p-3 rounded-lg border-2 hover:bg-gray-50 transition-all peer-checked:border-indigo-600 peer-checked:bg-indigo-50">
                                     <div class="flex items-center gap-3">
                                         <div class="w-8 h-8 rounded-full shadow-sm {{ $val['color'] }}"></div>
                                         <span class="text-sm font-medium text-gray-700">{{ $val['label'] }}</span>
                                     </div>
                                 </div>
-                                
                                 <div class="absolute top-1 right-2 hidden peer-checked:block text-indigo-600">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                                 </div>
-
                             </label>
                         @endforeach
                     </div>
+
+                    <div class="pt-6 border-t border-gray-200">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Tautkan Sosial Media</label>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">IG</span>
+                                <input type="url" wire:model="soc_instagram" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://instagram.com/...">
+                            </div>
+
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">TT</span>
+                                <input type="url" wire:model="soc_tiktok" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://tiktok.com/...">
+                            </div>
+
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">WA</span>
+                                <input type="url" wire:model="soc_whatsapp" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://wa.me/62...">
+                            </div>
+                            
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">YT</span>
+                                <input type="url" wire:model="soc_youtube" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://youtube.com/...">
+                            </div>
+
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">FB</span>
+                                <input type="url" wire:model="soc_facebook" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://facebook.com/...">
+                            </div>
+
+                            <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                                <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">X</span>
+                                <input type="url" wire:model="soc_twitter" class="block flex-1 border-0 bg-transparent py-2 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://x.com/...">
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

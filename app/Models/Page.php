@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     // Izinkan kolom ini diisi massal
-    protected $fillable = ['user_id', 'title', 'slug', 'bio_text', 'theme', 'avatar_path'];
+    protected $fillable = ['user_id', 'title', 'slug', 'bio_text', 'theme', 'avatar_path', 'soc_instagram', 'soc_tiktok', 'soc_twitter', 'soc_facebook', 'soc_whatsapp', 'soc_youtube'];
 
     // Relasi ke User
     public function user()
