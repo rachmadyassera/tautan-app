@@ -95,7 +95,7 @@ class PageSettings extends Component
         session()->flash('settingsSuccess', 'Profil berhasil diperbarui!');
 
         // Emit event agar komponen lain (opsional) tahu ada perubahan
-        $this->dispatch('pageUpdated');
+        $this->dispatch('contentUpdated');
     }
 
     public function render()

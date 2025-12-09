@@ -81,6 +81,8 @@ class LinkManager extends Component
         }
 
         $this->cancelEdit();
+
+        $this->dispatch('contentUpdated');
     }
 
     public function editLink($id)
@@ -116,6 +118,7 @@ class LinkManager extends Component
             abort(403);
         }
         $link->delete();
+        $this->dispatch('contentUpdated');
         session()->flash('linkSuccess', 'Link dihapus.');
     }
 
@@ -124,5 +127,6 @@ class LinkManager extends Component
         foreach ($list as $item) {
             Link::where('id', $item['value'])->update(['position' => $item['order']]);
         }
+        $this->dispatch('contentUpdated');
     }
 }

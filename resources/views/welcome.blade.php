@@ -3,135 +3,165 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Tautanku') }} - Satu Tautan untuk Semua Link</title>
-
+    <title>{{ config('app.name', 'TautanKu') }} - Satu Tautan untuk Semua</title>
+    
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600,700,800&display=swap" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="antialiased bg-gray-50 text-gray-800 font-figtree">
+<body class="antialiased bg-white text-gray-900 font-figtree">
 
-    <nav class="absolute top-0 left-0 w-full z-50">
-        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-            <a href="/" class="text-2xl font-extrabold text-indigo-600 tracking-tighter">
-                Tautan<span class="text-gray-900">Ku.</span>
-            </a>
-
-            <div class="flex items-center space-x-4">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-indigo-600 transition">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-indigo-600 transition">Masuk</a>
-                        
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="hidden sm:inline-block px-5 py-2 bg-indigo-600 text-white font-bold rounded-full hover:bg-indigo-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                                Daftar Gratis
-                            </a>
-                        @endif
-                    @endauth
-                @endif
-            </div>
+    <nav class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="font-extrabold text-2xl text-indigo-900 tracking-tight">
+            Tautan<span class="text-indigo-600">App.</span>
+        </div>
+        <div class="flex gap-4">
+            @if (Route::has('login'))
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-indigo-600 transition">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-indigo-600 transition py-2">Masuk</a>
+                    
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="hidden sm:inline-block bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
+                            Daftar Gratis
+                        </a>
+                    @endif
+                @endauth
+            @endif
         </div>
     </nav>
 
-    <div class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row items-center">
+    <section class="relative pt-12 pb-20 lg:pt-20 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
-            <div class="lg:w-1/2 lg:pr-10">
-                <h1 class="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                    Satu Tautan untuk <br>
+            <div class="text-center lg:text-left z-10">
+                <div class="inline-block px-4 py-1.5 bg-indigo-50 border border-indigo-100 rounded-full text-indigo-600 text-xs font-bold tracking-wide mb-6 uppercase">
+                    ✨ Rilis Baru 2025
+                </div>
+                
+                <h1 class="text-4xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                    Satu Link untuk <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Semua Sosmedmu.</span>
                 </h1>
-                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
-                    Kumpulkan TikTok, Instagram, WhatsApp, dan toko onlinemu dalam satu halaman cantik. Mudah dibuat, gratis selamanya.
-                </p>
                 
+                <p class="text-lg text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Kumpulkan TikTok, Instagram, WhatsApp, dan toko onlinemu dalam satu halaman cantik. Didesain khusus untuk profesional, ASN, dan konten kreator.
+                </p>
+
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="{{ route('register') }}" class="px-8 py-4 bg-indigo-600 text-white font-bold text-lg rounded-full hover:bg-indigo-700 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
-                        Buat Tautan Sekarang &rarr;
+                    <a href="{{ route('register') }}" class="px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold text-lg hover:bg-indigo-700 hover:scale-105 transition shadow-xl shadow-indigo-200 flex items-center justify-center gap-2">
+                        Buat Tautan Sekarang
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </a>
-                    <a href="#features" class="px-8 py-4 bg-white text-gray-700 font-bold text-lg rounded-full border border-gray-200 hover:bg-gray-50 transition">
+                    <a href="#faq" class="px-8 py-4 bg-white border-2 border-gray-100 text-gray-700 rounded-xl font-bold text-lg hover:border-indigo-100 hover:bg-indigo-50 transition flex items-center justify-center">
                         Pelajari Fitur
                     </a>
                 </div>
-                
-                <div class="mt-8 flex items-center justify-center lg:justify-start space-x-4 text-sm text-gray-500">
-                    <div class="flex items-center">
-                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                <div class="mt-10 pt-8 border-t border-gray-100 flex flex-col sm:flex-row gap-6 justify-center lg:justify-start text-sm text-gray-500 font-medium">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Gratis Selamanya
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Setup Cuma 2 Menit
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         Tanpa Kartu Kredit
                     </div>
-                    <div class="flex items-center">
-                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        Setup 2 Menit
-                    </div>
                 </div>
             </div>
 
-            <div class="lg:w-1/2 mt-16 lg:mt-0 relative">
-                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-                <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="relative hidden lg:block">
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+                <div class="absolute top-0 right-40 w-[500px] h-[500px] bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
                 
-                <div class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl flex flex-col overflow-hidden">
-                    <div class="h-[32px] w-[3px] bg-gray-800 absolute -start-[17px] top-[72px] rounded-s-lg"></div>
-                    <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[124px] rounded-s-lg"></div>
-                    <div class="h-[46px] w-[3px] bg-gray-800 absolute -start-[17px] top-[178px] rounded-s-lg"></div>
-                    <div class="h-[64px] w-[3px] bg-gray-800 absolute -end-[17px] top-[142px] rounded-e-lg"></div>
-                    <div class="rounded-[2rem] overflow-hidden w-[272px] h-[572px] bg-white dark:bg-gray-800">
-                        <iframe src="{{ url('/official-zuhri') }}" class="w-full h-full border-0" scrolling="yes"></iframe>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-
-    <div id="features" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-12">Semua yang Anda Butuhkan</h2>
-            
-            <div class="grid md:grid-cols-3 gap-10">
-                <div class="p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Tema Kustom</h3>
-                    <p class="text-gray-500">Pilih tema yang sesuai dengan brand Anda. Dari Dark Mode, Luxury, hingga Forest.</p>
-                </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Analitik & QR</h3>
-                    <p class="text-gray-500">Pantau jumlah klik link Anda dan dapatkan QR Code otomatis siap cetak.</p>
-                </div>
-
-                <div class="p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition">
-                    <div class="w-14 h-14 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Mobile First</h3>
-                    <p class="text-gray-500">Tampilan responsif yang terlihat sempurna di semua ukuran layar smartphone.</p>
-                </div>
+                <img src="{{ asset('storage/mockups/hero-phone.png') }}" 
+                     alt="App Preview" 
+                     class="relative z-10 w-full max-w-md mx-auto drop-shadow-2xl transform hover:-rotate-2 transition duration-500"
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-center p-20 bg-gray-50 rounded-xl border-dashed border-2\'>[Tempatkan Screenshot HP di sini]</div>'">
+                     {{-- Catatan: Ganti src dengan path gambar HP Anda yang asli jika ada, atau biarkan placeholder --}}
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <span class="text-2xl font-bold">TautanKu.</span>
-                <p class="text-gray-400 text-sm mt-2">&copy; {{ date('Y') }} Tautan App. All rights reserved.</p>
+    <section id="faq" class="py-20 bg-gray-50">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pertanyaan Umum</h2>
+                <p class="text-gray-500">Hal-hal yang sering ditanyakan pengguna baru.</p>
             </div>
-            <div class="flex space-x-6">
-                <a href="#" class="text-gray-400 hover:text-white">Privacy</a>
-                <a href="#" class="text-gray-400 hover:text-white">Terms</a>
-                <a href="{{ url('/official-zuhri') }}" class="text-gray-400 hover:text-white">Contact</a>
+
+            <div class="space-y-4">
+                <div x-data="{ open: false }" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-4 text-left flex justify-between items-center font-bold text-gray-800 hover:bg-gray-50 transition">
+                        <span>Apakah aplikasi ini benar-benar gratis?</span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-indigo-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 pb-4 text-gray-600 leading-relaxed">
+                        Ya! Anda bisa membuat profil, menambahkan link tak terbatas, dan memilih tema secara gratis selamanya. Kami mendesain ini untuk membantu profesional dan UMKM berkembang.
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-4 text-left flex justify-between items-center font-bold text-gray-800 hover:bg-gray-50 transition">
+                        <span>Bisakah saya mengganti link nanti?</span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-indigo-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 pb-4 text-gray-600 leading-relaxed">
+                        Tentu saja. Anda memiliki akses penuh ke Dashboard Admin di mana Anda bisa menambah, menghapus, atau mengedit urutan link kapan saja secara real-time.
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-4 text-left flex justify-between items-center font-bold text-gray-800 hover:bg-gray-50 transition">
+                        <span>Apakah ada fitur analisis pengunjung?</span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-indigo-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 pb-4 text-gray-600 leading-relaxed">
+                        Ada. Setiap kali seseorang mengklik link di profil Anda, kami mencatatnya. Anda bisa melihat grafik statistik kunjungan langsung dari Dashboard Anda.
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            
+            <div class="text-center md:text-left">
+                <div class="font-bold text-xl text-gray-900 mb-1">TautanApp</div>
+                <p class="text-sm text-gray-500">&copy; {{ date('Y') }} Hak Cipta Dilindungi.</p>
+            </div>
+
+            <div class="flex gap-6 text-sm text-gray-500 font-medium">
+                <a href="#" class="hover:text-indigo-600 transition">Tentang</a>
+                <a href="#" class="hover:text-indigo-600 transition">Privasi</a>
+                <a href="#" class="hover:text-indigo-600 transition">Syarat Ketentuan</a>
+            </div>
+
         </div>
     </footer>
 
+    <style>
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+    </style>
 </body>
 </html>
